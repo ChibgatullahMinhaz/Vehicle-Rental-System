@@ -29,14 +29,14 @@ export const auth = (...roles: string[]) => {
         token,
         config.jwtSecret as string
       ) as JwtPayload;
-
+      req.user = decoded;
       if (roles.length && !roles.includes(decoded.role as string)) {
         return res.status(HttpStatus.UNAUTHORIZED).json({
           error: "unauthorized!!!",
         });
       }
 
-      next()
+      next();
     } catch (error: any) {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         success: false,

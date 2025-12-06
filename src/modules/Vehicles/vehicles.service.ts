@@ -1,4 +1,3 @@
-import { Result } from "pg";
 import { pool } from "../../config/db";
 import { VehiclePayload } from "./vehilse.type";
 import { validate as isUUID } from "uuid";

@@ -42,7 +42,7 @@ export const createVehicle = async (req: Request, res: Response) => {
 export const getAllVehicles = async (req: Request, res: Response) => {
   try {
     const result = await vehicleService.getAll();
-    sendResponse(res, {
+   return sendResponse(res, {
       statusCode: HttpStatus.OK,
       success: true,
       message: "Vehicles retrieved successfully",
