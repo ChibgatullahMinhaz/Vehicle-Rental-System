@@ -60,6 +60,7 @@ export const vehicleService = {
     if (!isUUID(vehicleId)) {
       throw new Error("Invalid vehicle ID");
     }
+
     const result = await pool.query(`SELECT * FROM Vehicles  WHERE id =$1`, [
       vehicleId,
     ]);
@@ -74,6 +75,14 @@ export const vehicleService = {
     if (!isUUID(vehicleId)) {
       throw new Error("Invalid vehicle ID");
     }
+    const findBookings = await pool.query(
+      `SELECT * FROM Bookings WHERE vehicle_id=$1 AND status=$2`,
+      [vehicleId, "active"]
+    );
+    if (findBookings.rows.length > 0) {
+      throw new Error("Cannot delete vehicle: active bookings exist");
+    }
+
     const result = await pool.query(
       `DELETE FROM  Vehicles WHERE id =$1 RETURNING *`,
       [vehicleId]
