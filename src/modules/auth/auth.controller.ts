@@ -6,7 +6,6 @@ import { authService } from "./auth.service";
 const createUser = async (req: Request, res: Response) => {
   try {
     const result = await authService.registration(req.body);
-    console.log(result);
     sendResponse(res, {
       statusCode: httpStatus.CREATED,
       success: true,
@@ -26,7 +25,7 @@ const createUser = async (req: Request, res: Response) => {
 const userLogin = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   try {
-    if (!email || password) {
+    if (!email || !password) {
       sendResponse(res, {
         statusCode: httpStatus.BAD_REQUEST,
         success: true,
@@ -35,16 +34,24 @@ const userLogin = async (req: Request, res: Response) => {
       });
     }
 
+    const result = await authService.login(email, password);
+    if (!result) {
+      return sendResponse(res, {
+        statusCode: httpStatus.BAD_REQUEST,
+        success: false,
+        message: "User not found",
+        data: null,
+      });
+    }
 
-    const result = await authService.login(email, password)
-    sendResponse(res, {
+    return sendResponse(res, {
       statusCode: httpStatus.CREATED,
       success: true,
       message: "User Registration successfully",
-      data: null,
+      data: result,
     });
   } catch (error: any) {
-    sendResponse(res, {
+    return sendResponse(res, {
       statusCode: httpStatus.INTERNAL_SERVER_ERROR,
       success: true,
       message: error.message,

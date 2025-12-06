@@ -5,14 +5,14 @@ import intiDB from "./config/db";
 import notFound from "./middleware/notFound";
 const app = express();
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 
 intiDB();
 app.use("/api/v1", router);
 
 app.get("/", (req: Request, res: Response) => {
-    res.send("Hello World!");
+  res.send("Hello World!");
 });
 
-app.use(notFound)
+app.use(notFound);
 export default app;

@@ -5,6 +5,7 @@ import config from "../../config/config";
 
 const registration = async (payload: Record<string, unknown>) => {
   const { name, email, password, phone, role } = payload;
+  console.log(payload)
   const salt = await bcrypt.genSalt(10);
   const hashPass = await bcrypt.hash(password as string, salt);
   const result = await pool.query(
