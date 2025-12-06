@@ -14,7 +14,7 @@ const intiDB = async () => {
     email TEXT NOT NULL UNIQUE CHECK (email = LOWER(email)),
     password TEXT NOT NULL CHECK (char_length(password) >= 6),
     phone TEXT NOT NULL,
-    role TEXT NOT NULL CHECK (role IN ('admin', 'customer')),
+    role TEXT NOT NULL CHECK (role IN ('admin', 'customer')) DEFAULT 'customer',
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
     )`
@@ -22,9 +22,9 @@ const intiDB = async () => {
   console.log("user table is ready");
 
   await pool.query(`
-    CREATE TABLE IS NOT EXISTS Vehicles (
+    CREATE TABLE IF NOT EXISTS Vehicles (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    vehicle_name VARCHAR(200) NOT NUL ,
+    vehicle_name VARCHAR(200) NOT NULL ,
     type TEXT NOT NULL CHECK (type IN ('car', 'bike', 'van', 'SUV')),
     registration_number VARCHAR(50) NOT NULL UNIQUE ,
     daily_rent_price NUMERIC(10,2) NOT NULL CHECK (daily_rent_price > 0),
@@ -35,7 +35,7 @@ const intiDB = async () => {
     `);
 
   await pool.query(`
-      CREATE TABLE IS NOT EXISTS Bookings(
+      CREATE TABLE IF NOT EXISTS Bookings(
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
       customer_id UUID REFERENCES users(id) ON DELETE CASCADE,
       vehicle_id UUID REFERENCES Vehicles(id) ON DELETE CASCADE,
