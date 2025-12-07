@@ -39,7 +39,8 @@ const getBookings = async (req, res) => {
 };
 const updateBooking = async (req, res) => {
     try {
-        const bookingId = req.params.id;
+        const { bookingId } = req.params;
+        console.log(bookingId);
         const user = req.user;
         const result = await booking_service_1.bookingService.update(bookingId, req.body, user);
         res.status(200).json({

@@ -62,9 +62,6 @@ exports.vehicleService = {
         if (!vehicleId) {
             throw new Error("Vehicle ID is required");
         }
-        // if (!isUUID(vehicleId)) {
-        //   throw new Error("Invalid vehicle ID");
-        // }
         const isExists = await db_1.pool.query(` SELECT * FROM Vehicles WHERE id = $1`, [
             vehicleId,
         ]);
