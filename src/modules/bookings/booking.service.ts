@@ -33,6 +33,12 @@ export const bookingService = {
     if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
       throw new Error("Invalid date format");
     }
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (startDate < today) {
+      throw new Error("Rent start date cannot be in the past");
+    }
 
     if (endDate <= startDate) {
       throw new Error("End date must be after start date");
@@ -48,8 +54,8 @@ export const bookingService = {
       SELECT 1 FROM Bookings
       WHERE vehicle_id = $1
       AND status = 'active'
-      AND rent_start_date < $3
-      AND rent_end_date > $2
+      AND rent_start_date < $2
+      AND rent_end_date > $3
     `,
       [vehicle_id, startDate.toISOString(), endDate.toISOString()]
     );
@@ -137,7 +143,7 @@ export const bookingService = {
       id,
     ]);
 
-    if (!bookingData.rows.length) throw new Error("Booking not found");
+    if (bookingData.rows.length === 0) throw new Error("Booking not found");
     const booking = bookingData.rows[0];
 
     // Timezone-safe today

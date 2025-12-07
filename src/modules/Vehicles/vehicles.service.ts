@@ -1,6 +1,5 @@
 import { pool } from "../../config/db";
 import { VehiclePayload } from "./vehilse.type";
-import { validate as isUUID } from "uuid";
 
 export const vehicleService = {
   async create(payload: VehiclePayload) {
@@ -56,10 +55,7 @@ export const vehicleService = {
     if (!vehicleId) {
       throw new Error("Vehicle ID is required");
     }
-    if (!isUUID(vehicleId)) {
-      throw new Error("Invalid vehicle ID");
-    }
-
+   
     const result = await pool.query(`SELECT * FROM Vehicles  WHERE id =$1`, [
       vehicleId,
     ]);
@@ -71,9 +67,7 @@ export const vehicleService = {
     if (!vehicleId) {
       throw new Error("Vehicle ID is required");
     }
-    if (!isUUID(vehicleId)) {
-      throw new Error("Invalid vehicle ID");
-    }
+   
     const findBookings = await pool.query(
       `SELECT * FROM Bookings WHERE vehicle_id=$1 AND status=$2`,
       [vehicleId, "active"]
@@ -105,9 +99,7 @@ export const vehicleService = {
     if (!vehicleId) {
       throw new Error("Vehicle ID is required");
     }
-    if (!isUUID(vehicleId)) {
-      throw new Error("Invalid vehicle ID");
-    }
+  
 
     const isExists = await pool.query(` SELECT * FROM Vehicles WHERE id = $1`, [
       vehicleId,

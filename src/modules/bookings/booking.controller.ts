@@ -40,7 +40,8 @@ const getBookings = async (req: Request, res: Response) => {
 };
 const updateBooking = async (req: Request, res: Response) => {
   try {
-    const bookingId = req.params.id;
+    const { bookingId } = req.params;
+    console.log(bookingId);
     const user = req.user;
     const result = await bookingService.update(
       bookingId as string,

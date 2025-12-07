@@ -1,5 +1,4 @@
 import { pool } from "../../config/db";
-import { validate as isUUID } from "uuid";
 
 export const usersService = {
   async getAllUsers() {
@@ -13,9 +12,9 @@ export const usersService = {
     if (!userId) {
       throw new Error("user ID is required");
     }
-    if (!isUUID(userId)) {
-      throw new Error("Invalid user ID");
-    }
+    // if (!isUUID(userId)) {
+    //   throw new Error("Invalid user ID");
+    // }
     const findBookings = await pool.query(
       `SELECT * FROM Bookings WHERE customer_id=$1 AND status=$2`,
       [userId, "active"]
@@ -38,9 +37,9 @@ export const usersService = {
     if (!userId) {
       throw new Error("Vehicle ID is required");
     }
-    if (!isUUID(userId)) {
-      throw new Error("Invalid vehicle ID");
-    }
+    // if (!isUUID(userId)) {
+    //   throw new Error("Invalid vehicle ID");
+    // }
     const { name, email, phone, role } = payload;
     const isExists = await pool.query(`SELECT * FROM users WHERE id=$1`, [
       userId,
@@ -63,9 +62,9 @@ export const usersService = {
     if (!userId) {
       throw new Error("Vehicle ID is required");
     }
-    if (!isUUID(userId)) {
-      throw new Error("Invalid vehicle ID");
-    }
+    // if (!isUUID(userId)) {
+    //   throw new Error("Invalid vehicle ID");
+    // }
     const { name, email, phone, role } = payload;
     if (role) {
       throw new Error("customer cannot update own role");
