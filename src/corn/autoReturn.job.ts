@@ -1,13 +1,12 @@
 import cron from "node-cron";
 import { pool } from "../config/db";
 
-const CRON_EXPRESSION = process.env.AUTO_RETURN_CRON || "*/1 * * * *"; // default: every 5 min
-const BATCH_SIZE = 50; // process 50 bookings at a time
-const ADVISORY_KEY = 123456; // unique lock key
+const CRON_EXPRESSION = process.env.AUTO_RETURN_CRON || "*/1 * * * *"; 
+const BATCH_SIZE = 50; 
+const ADVISORY_KEY = 123456; 
 const MAX_RETRIES = 3;
 const RETRY_BASE_MS = 1000;
 
-// Optional logger (or use console)
 const logger = console;
 
 async function processBatch(client: any) {
