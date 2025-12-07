@@ -5,7 +5,7 @@ import config from "../../config/config";
 
 const registration = async (payload: Record<string, unknown>) => {
   const { name, email, password, phone, role } = payload;
-  console.log(payload)
+  console.log(payload);
   const salt = await bcrypt.genSalt(10);
   const hashPass = await bcrypt.hash(password as string, salt);
   const result = await pool.query(
@@ -30,7 +30,7 @@ const login = async (email: string, password: string) => {
     return false;
   }
   const token = jwt.sign(
-    { name: user.name, email: user.email, role: user.role },
+    { name: user.name, email: user.email, role: user.role, id: user.id },
     config.jwtSecret as string,
     {
       expiresIn: "7d",
